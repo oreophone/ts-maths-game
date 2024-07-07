@@ -1,0 +1,20 @@
+{
+  "name": "ts-maths-game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w && webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "webpack": "^5.92.1"
+  }
+}
