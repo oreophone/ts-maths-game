@@ -75,6 +75,10 @@ export class Question {
         }
     }
 
+    submitSolution(solution: number): boolean {
+        return solution === this.generateSolution()
+    }
+
     private generateSolution(): number {
         if (OPERATORQUESTIONNUMBERS[this.operator] !== this.questionNumbers.length) {
             return Number.POSITIVE_INFINITY // error value chosen for now
