@@ -38,6 +38,17 @@ export class GameLoop extends GameState {
         this.gameTimer = null;
     }
 
+    static default(): GameLoop {
+        let defaultGameState = super.default();
+        return new GameLoop(
+            defaultGameState.gamemode,
+            defaultGameState.startingRules,
+            defaultGameState.setTemplate,
+            defaultGameState.numPoints,
+        )
+
+    }
+
     generateQuestionTemplate(): QuestionTemplate {
         let difficulty = this.gamerules.difficulty;
         let dBase = Math.floor(difficulty);
