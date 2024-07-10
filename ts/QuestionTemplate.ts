@@ -25,7 +25,7 @@ export type questionNumbers
     ;
 
 export class QuestionTemplate {
-    operatorTemplate: operatorTemplates;
+    operatorTemplates: operatorTemplates;
     isNegativeNumbersAllowed: boolean;
 
     constructor(
@@ -36,10 +36,10 @@ export class QuestionTemplate {
     ) {
 
         let questionTemplate = params;
-        this.operatorTemplate = <operatorTemplates>Object.fromEntries(OPERATORS.map((op) => [op, null]));
+        this.operatorTemplates = <operatorTemplates>Object.fromEntries(OPERATORS.map((op) => [op, null]));
         OPERATORS.forEach(op => {
             let curValue = questionTemplate[op]
-            this.operatorTemplate[op] = curValue === undefined ?
+            this.operatorTemplates[op] = curValue === undefined ?
                 null : curValue
         });
 
@@ -48,7 +48,7 @@ export class QuestionTemplate {
 
     getAllowedOperations(): operator[] {
         let opList: operator[] = OPERATORS.map((op) => op);
-        return opList.filter((op) => this.operatorTemplate[op] !== null);
+        return opList.filter((op) => this.operatorTemplates[op] !== null);
     }
 
     fromBaseDifficulty(dif: number): QuestionTemplate {

@@ -1,4 +1,5 @@
 import {QuestionTemplate, operator, numberRange, questionNumbers, OPERATORS} from "./QuestionTemplate";
+import {randomSeeded} from "./RandomSeeded";
 
 export class Question {
     questionNumbers: questionNumbers;
@@ -16,6 +17,16 @@ export class Question {
         this.operator = operator;
         this.randomSeed = randomSeed;
         this.solution = this.generateSolution();
+    }
+
+    fromTemplate(
+        template: QuestionTemplate,
+        randomSeed: number | null = null
+    ): Question {
+        var rng = randomSeeded(randomSeed);
+        let allowedOperators = template.getAllowedOperations();
+        this.randomSeed = randomSeed;
+        // TODO
     }
 
     private generateSolution(): number {
