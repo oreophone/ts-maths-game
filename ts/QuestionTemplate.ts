@@ -11,6 +11,19 @@ export const OPERATORS = [
     'subtractadd',
 ] as const;
 
+export const OPERATORQUESTIONNUMBERS = {
+    'add': 2,
+    'subtract': 2,
+    'multiply': 2,
+    'divide': 2,
+    'square': 1,
+    'cube': 1,
+    'add3': 3,
+    'sub3': 3,
+    'addsubtract': 3,
+    'subtractadd': 3,
+}
+
 export type operator = typeof OPERATORS[number];
 
 export type numberRange = [number, number];
@@ -51,18 +64,18 @@ export class QuestionTemplate {
         return opList.filter((op) => this.operatorTemplates[op] !== null);
     }
 
-    fromBaseDifficulty(dif: number): QuestionTemplate {
+    static fromBaseDifficulty(dif: number): QuestionTemplate {
         switch (dif) {
-            case 1: return this.DIF1()
-            case 2: return this.DIF2()
-            case 3: return this.DIF3()
-            case 4: return this.DIF4()
-            case 5: return this.DIF5()
-            default: return this.DIF1()
+            case 1: return QuestionTemplate.DIF1()
+            case 2: return QuestionTemplate.DIF2()
+            case 3: return QuestionTemplate.DIF3()
+            case 4: return QuestionTemplate.DIF4()
+            case 5: return QuestionTemplate.DIF5()
+            default: return QuestionTemplate.DIF1()
         }
     }
 
-    private DIF1(): QuestionTemplate {
+    private static DIF1(): QuestionTemplate {
         return new QuestionTemplate({
             add: [0,10],
             subtract: [0,10],
@@ -73,7 +86,7 @@ export class QuestionTemplate {
         )
     }
 
-    private DIF2(): QuestionTemplate {
+    private static  DIF2(): QuestionTemplate {
         return new QuestionTemplate({
             add: [1,30],
             subtract: [1,30],
@@ -86,7 +99,7 @@ export class QuestionTemplate {
         )
     }
 
-    private DIF3(): QuestionTemplate {
+    private static  DIF3(): QuestionTemplate {
         return new QuestionTemplate({
             add: [10,100],
             subtract: [30,100],
@@ -100,7 +113,7 @@ export class QuestionTemplate {
         })
     }
 
-    private DIF4(): QuestionTemplate {
+    private static DIF4(): QuestionTemplate {
         return new QuestionTemplate({
             add: [10,500],
             subtract: [10,500],
@@ -115,7 +128,7 @@ export class QuestionTemplate {
         })
     }
 
-    private DIF5(): QuestionTemplate {
+    private static DIF5(): QuestionTemplate {
         return new QuestionTemplate({
             add: [100,999],
             subtract: [100,999],

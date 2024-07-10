@@ -26,13 +26,25 @@ export function genFromRange(rng: () => number, range: numberRange): number {
     return Math.floor(rng() * r) + min;
 }
 
-// TODO implement distributions
-export function genSample(
+export function genSampleFromRange(
     rng: () => number,
-    sample: any[],
-    numItems: number,
+    range: numberRange,
+    numItems: number = 1,
+): number[] {
+    var returnSample = [];
+    for (let i = 0; i < numItems; i++) {
+        returnSample.push(genFromRange(rng, range))
+    }
+    return returnSample
+}
+
+// TODO implement distributions
+export function genSample<T>(
+    rng: () => number,
+    sample: T[],
+    numItems: number = 1,
     dist: number[] | null = null,
-): any[] {
+): T[] {
     var returnSample = [];
     for (let i = 0; i < numItems; i++) {
         let curIndex = genFromRange(rng, [0,sample.length - 1]);
@@ -43,24 +55,3 @@ export function genSample(
 
 // TODO write genSample without replacement
 
-function test(seed: number | null, numTests: number) {
-    let rng = randomSeeded(seed);
-    for(var i = 0; i < numTests; i++) {
-        console.log(rng());
-    } 
-}
-
-function testGenSample(seed: number | null) {
-    let rng = randomSeeded(seed);
-    console.log(genSample(rng, [
-        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
-    ], 8))
-    console.log(genSample(rng, [
-        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
-    ], 5))
-    console.log(genSample(rng, [
-        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
-    ], 21))
-}
-
-testGenSample(13333337)
