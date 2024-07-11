@@ -1,6 +1,7 @@
 node_modules
 # ts compiles
 src
+ts/*.js
 
 .DS_Store
 .env

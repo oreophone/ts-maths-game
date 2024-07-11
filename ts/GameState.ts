@@ -49,4 +49,10 @@ export class GameState {
             defaultGamerules,
         )
     }
+
+    // answerTime = cos(0.02π * numPoints) + 4
+    // i.e. answerTime oscillates between 5 and 3 secs over a period of 100 questions
+    protected static answerTimeFunc(n: number): number {
+        return Math.cos(n * Math.PI * 0.02) + 4
+    }
 }

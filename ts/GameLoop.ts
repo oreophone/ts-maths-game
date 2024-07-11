@@ -119,6 +119,9 @@ export class GameLoop extends GameState {
             return
         }
         if (this.gamemode == "marathon") {
+            this.gamerules.difficulty += 0.01;
+            this.curTemplate = this.generateQuestionTemplate();
+            this.gamerules.answerTime = GameState.answerTimeFunc(this.numPoints)
         }
         this.curQuestion = this.generateQuestion();
         this.updateTimer();
