@@ -10,8 +10,10 @@ export class GameLoop extends GameState {
     curQuestion: Question | null;
     curTemplate: QuestionTemplate | null;
     private randomSeed: number | null;
-    isRunning: boolean;
-    gameTimer: NodeJS.Timeout | null;
+    private answerText: string = "";
+    answerIsNegative: boolean = false;
+    isRunning: boolean = false;
+    gameTimer: NodeJS.Timeout | null = null;
 
     constructor(
         gamemode: gamemode,
@@ -21,7 +23,6 @@ export class GameLoop extends GameState {
         prevQuestions: questionStorage[] = [],
         curQuestion: Question | null = null,
         randomSeed: number | null = null,
-        isRunning: boolean = false,
 
     ) {
         super(
@@ -34,8 +35,6 @@ export class GameLoop extends GameState {
         this.curQuestion = curQuestion;
         this.curTemplate = setTemplate;
         this.randomSeed = randomSeed;
-        this.isRunning = isRunning;
-        this.gameTimer = null;
     }
 
     static default(): GameLoop {
@@ -52,6 +51,7 @@ export class GameLoop extends GameState {
     generateQuestionTemplate(): QuestionTemplate {
         let difficulty = this.gamerules.difficulty;
         let dBase = Math.floor(difficulty);
+        // dist. cubed for nicer flow
         let dDist = Math.pow(difficulty - dBase, 3);
         if (dDist === 0 || difficulty >= 5) return QuestionTemplate.fromBaseDifficulty(dBase);
 
@@ -61,7 +61,8 @@ export class GameLoop extends GameState {
         return QuestionTemplate.fromBaseDifficulty(dBase + 1) 
     }
 
-    submitAnswer(
+    private submitAnswer(
+        // null = timer expired
         answer: number | null,
     ): boolean {
         if (this.curQuestion === null) {
@@ -82,6 +83,24 @@ export class GameLoop extends GameState {
 
     }
 
+    handleKeydownEvent(key: string): void {
+        const NUMBERS = [
+            "1","2","3","4","5","6","7","8","9","0"
+        ];
+        if (NUMBERS.includes(key)) {
+            this.answerText += key;
+        }
+        if (key === "Backspace") {
+            this.answerText = this.answerText.slice(0,-1);
+        }
+        if (key === "Enter") {
+            this.submitAnswer(parseInt(this.answerText));
+        }
+        if (key === "-") {
+            this.answerIsNegative = !this.answerIsNegative;
+        }
+    }
+
     private resetGame(): void {
         this.gamerules = this.startingRules;
         this.isRunning = false;
@@ -89,7 +108,7 @@ export class GameLoop extends GameState {
         this.curTemplate = this.setTemplate === null ?
             this.generateQuestionTemplate() : this.setTemplate;
         this.numPoints = 0;
-        this.prevQuestions = []
+        this.prevQuestions = [];
     }
 
     startGame(): void {
@@ -108,13 +127,13 @@ export class GameLoop extends GameState {
                 () => this.submitAnswer(null) // noanswer
             , 1000 * this.gamerules.answerTime!);
             default: this.gameTimer = setTimeout(
-                () => this.isRunning = false
+                () => {this.isRunning = false; this.submitAnswer(null)}
             , 1000 * this.gamerules.gameTime!)
         }
     }
 
     private updatePostAnswer(): void {
-        if(this.gamerules.numLives <= 0) {
+        if(this.gamerules.numLives <= 0 || !this.isRunning) {
             this.isRunning = false;
             return
         }
@@ -132,6 +151,10 @@ export class GameLoop extends GameState {
             this.curTemplate = this.generateQuestionTemplate();
         }
         return Question.fromTemplate(this.curTemplate, this.randomSeed)
+    }
+
+    getAnswerText(): string {
+        return (this.answerIsNegative ? "-" : "") + this.answerText;
     }
 
 

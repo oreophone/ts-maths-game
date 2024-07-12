@@ -2,7 +2,7 @@ import {QuestionTemplate} from "./QuestionTemplate";
 
 export const GAMEMODES = [
     "marathon",
-    "timed",
+    "sprint",
     "zen"
 ] as const;
 
@@ -13,6 +13,7 @@ export type gamerules = {
     gameTime: number | null,
     difficulty: number,
     numLives: number,
+    numQuestions: number | null
 }
 
 export class GameState {
@@ -42,7 +43,8 @@ export class GameState {
             answerTime: 5,
             gameTime: null,
             difficulty: 1,
-            numLives: 3
+            numLives: 3,
+            numQuestions: null
         }
         return new GameState(
             "marathon",

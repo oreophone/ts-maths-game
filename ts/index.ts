@@ -1,6 +1,8 @@
+import { Renderer } from "./Renderer"
+
+
 function main(): void {
-    document.getElementById("hello-world")!.innerText
-        = "Hello, world!";
+    var renderer = Renderer.default();
 }
 
 main()
